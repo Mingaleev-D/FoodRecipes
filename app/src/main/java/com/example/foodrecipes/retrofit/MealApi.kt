@@ -1,5 +1,6 @@
 package com.example.foodrecipes.retrofit
 
+import com.example.foodrecipes.models.CategoryList
 import com.example.foodrecipes.models.RandomMealList
 import retrofit2.Call
 import retrofit2.http.GET
@@ -13,5 +14,9 @@ interface MealApi {
     @GET("lookup.php?")
     fun getMealDetails(
         @Query("i") id:String):Call<RandomMealList>
+
+    @GET("filter.php?")
+    fun getPopularItems(
+        @Query("c") categoryName:String):Call<CategoryList>
 
 }
