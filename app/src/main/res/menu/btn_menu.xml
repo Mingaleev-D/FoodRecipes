@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/homeFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/favoritesFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_border"
+        android:title="Favorites"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/categoryFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_category"
+        android:title="Category"
+        app:showAsAction="always"/>
+
+</menu>
