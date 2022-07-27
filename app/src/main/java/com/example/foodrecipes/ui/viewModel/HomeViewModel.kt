@@ -3,10 +3,7 @@ package com.example.foodrecipes.ui.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.foodrecipes.models.CategoryList
-import com.example.foodrecipes.models.CategoryMeals
-import com.example.foodrecipes.models.Meal
-import com.example.foodrecipes.models.RandomMealList
+import com.example.foodrecipes.models.*
 import com.example.foodrecipes.retrofit.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +13,7 @@ class HomeViewModel : ViewModel() {
 
     private var randomMealLiveData = MutableLiveData<Meal>()
     private var popularItemsLiveData = MutableLiveData<List<CategoryMeals>>()
+    private var categoryLiveData = MutableLiveData<List<Category>>()
 
     fun getRandomMeal() {
         //запрос на получения случайной(рандомной картинки)
@@ -39,11 +37,9 @@ class HomeViewModel : ViewModel() {
 
         })
     }
-
     fun observeRandomMealLiveData():LiveData<Meal>{
         return randomMealLiveData
     }
-
 
     fun getPopularItems(){
         RetrofitInstance.api.getPopularItems("Seafood").enqueue(object:Callback<CategoryList>{
@@ -61,5 +57,26 @@ class HomeViewModel : ViewModel() {
     }
     fun observePopularItemsLiveData():LiveData<List<CategoryMeals>>{
         return popularItemsLiveData
+    }
+
+    fun getCategory(){
+        RetrofitInstance.api.getCategory().enqueue(object:Callback<MealsCategoryList>{
+            override fun onResponse(
+                call: Call<MealsCategoryList>,
+                response: Response<MealsCategoryList>
+            ) {
+                response.body()?.let { categoryList->
+                    categoryLiveData.postValue(categoryList.categories)
+                }
+
+            }
+
+            override fun onFailure(call: Call<MealsCategoryList>, t: Throwable) {
+                //TODO("Not yet implemented")
+            }
+        })
+    }
+    fun observeCategoryLiveData(): MutableLiveData<List<Category>> {
+        return categoryLiveData
     }
 }
