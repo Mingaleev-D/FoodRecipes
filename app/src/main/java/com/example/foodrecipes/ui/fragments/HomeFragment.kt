@@ -16,6 +16,7 @@ import com.example.foodrecipes.adapters.PopularMealsAdapters
 import com.example.foodrecipes.databinding.FragmentHomeBinding
 import com.example.foodrecipes.models.CategoryMeals
 import com.example.foodrecipes.models.Meal
+import com.example.foodrecipes.ui.activity.CategoryMealsActivity
 import com.example.foodrecipes.ui.activity.MealActivity
 import com.example.foodrecipes.ui.viewModel.HomeViewModel
 
@@ -32,6 +33,8 @@ class HomeFragment : Fragment() {
         const val MEAL_ID = "com.example.foodrecipes.ui.fragments.idMeal"
         const val MEAL_NAME = "com.example.foodrecipes.ui.fragments.nameMeal"
         const val MEAL_THUMD = "com.example.foodrecipes.ui.fragments.thumbMeal"
+
+        const val CATEGORY_NAME = "com.example.foodrecipes.ui.fragments.categoryName"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +70,16 @@ class HomeFragment : Fragment() {
         homeMvvm.getCategory()
         observeCategoryLiveData()
 
+        onCategoryClick()
+
+    }
+
+    private fun onCategoryClick() {
+        categoryAdapter.onItemClick = {category->
+            val intent = Intent(activity,CategoryMealsActivity::class.java)
+            intent.putExtra(CATEGORY_NAME,category.strCategory)
+            startActivity(intent)
+        }
     }
 
     private fun prepareCategoryRecyclerView() {
