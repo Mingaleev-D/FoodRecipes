@@ -7,10 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.foodrecipes.models.Meal
 
-@Database(entities = [Meal::class], version = 1, exportSchema = false)
+@Database(entities = [Meal::class], version = 1)
 @TypeConverters(MealTypeConvector::class)
 abstract class MealDatabase:RoomDatabase() {
-    abstract class mealDao():MealDao
+
+    abstract fun mealDao(): MealDao
 
     companion object{
         @Volatile
