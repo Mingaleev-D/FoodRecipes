@@ -1,18 +1,19 @@
 package com.example.foodrecipes.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.foodrecipes.R
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.foodrecipes.adapters.FavoritesMealsAdapter
 import com.example.foodrecipes.databinding.FragmentFavoritesBinding
 import com.example.foodrecipes.ui.activity.MainActivity
 import com.example.foodrecipes.ui.viewModel.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class FavoritesFragment : Fragment() {
@@ -39,6 +40,30 @@ class FavoritesFragment : Fragment() {
 
         prepareRecyclerView()
         observeFavorites()
+
+        val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = true
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                viewModel.deleteMeal(favoritesAdapter.differ.currentList[position])
+
+                Snackbar.make(requireView(), "Meal deleted", Snackbar.LENGTH_LONG).setAction(
+                    "Undo",
+                    View.OnClickListener {
+                        viewModel.insertMeal(favoritesAdapter.differ.currentList[position])
+                    }
+                ).show()
+            }
+        }
+        ItemTouchHelper(itemTouchHelper).attachToRecyclerView(binding.rvFavorites)
     }
 
     private fun prepareRecyclerView() {
